@@ -5,6 +5,7 @@
 package acebet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -15,14 +16,49 @@ public class AceBet {
     int botScore = 0; 
     ArrayList<Card> cardsList = null; 
     
+    public  AceBet(){
+        intializeCards(3);
+        shuffleCards();
+       /// System.err.println(compareChoice("ACE"));
+       compareChoice("ACE");
+    
+    }
+    
     private void intializeCards(int numCards){
+        cardsList = new ArrayList();
         for (int i = 0; i < numCards; i++) {
             Card card = new Card(i+"");
-            card.imageGetter();
+            ///card.imageGetter();
             this.cardsList.add(card);  
             
         
         }
+        cardsList.get(0).name = "ACE"; 
+         cardsList.get(0).imageGetter();
+      
+        cardsList.get(1).name = "Q"; 
+         cardsList.get(1).imageGetter();
+         
+        cardsList.get(2).name = "K"; 
+         cardsList.get(2).imageGetter();
+        
+        ///Collections.shuffle(cardsList);
+        
+        
+    
+    }
+    public void shuffleCards(){
+    Collections.shuffle(cardsList);
+    
+    }
+    public boolean compareChoice(String choice){
+        choice = "ACE"; 
+        for (int i = 0; i < this.cardsList.size(); i++){
+            System.out.println("Check : "+  this.cardsList.get(i).name.equals(choice) );
+        
+        }
+              ///choice.equals("ACE"); 
+        return choice.equals("ACE"); 
     
     }
 
@@ -31,6 +67,11 @@ public class AceBet {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        AceBet myBet = new  AceBet();
+        
+        
+
+        
     }
     
 }
