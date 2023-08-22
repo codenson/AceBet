@@ -1,3 +1,5 @@
+package acebet;
+
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,8 +38,7 @@ public class Card {
          s+= absolutePath; 
          
         s += name + ".png";
-      System.out.println("lingo.Alphabet.imageGetter(): "+ name);
-
+     
         try {
             img = ImageIO.read(new File(s));
         } catch (IOException e) {
