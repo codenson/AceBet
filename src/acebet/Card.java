@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author guero
+ * @author guero: Marouane Guerouji. 
  */
 public class Card {
     String name; 
@@ -42,15 +42,16 @@ public class Card {
         try {
             img = ImageIO.read(new File(s));
         } catch (IOException e) {
+            
+            System.err.println("not");
             return null;
-            ///System.err.println("not");;
         }
 
         return new ImageIcon(img);
     }
     public static void main(String  [] arg){
         System.out.println("Card.main()");
-        Card m = new Card("ace"); 
+        Card m = new Card(""); 
 
         m.imageGetter();
         
