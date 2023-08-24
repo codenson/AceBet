@@ -41,9 +41,9 @@ public class BettingPanel extends javax.swing.JPanel {
         deck = myBet.getDeckCard();
         initComponents();
         newRoundGuiReset();
-
-        String s = System.getProperty("user.dir") + File.separator + "src/Images/" + "casino.jpg";
-        casino = new ImageIcon(s);
+        
+        casino = new ImageIcon(getClass().getResource("/Images/" + "casino.jpg"));
+        
 
         jLabel11.setIcon(casino);
 
