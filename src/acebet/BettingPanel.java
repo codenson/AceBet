@@ -1,6 +1,7 @@
 package acebet;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -12,111 +13,108 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-
 /**
  *
- * @author guero: Marouane Guerouji. 
+ * @author guero: Marouane Guerouji.
  */
 public class BettingPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form BettingPanel
      */
-    AceBet myBet; 
-     Card deck ;
-    
-   
+    AceBet myBet;
+    Card deck;
+    ImageIcon casino;
+    int start;
 
     public BettingPanel() {
-          ///deck = new Card("deck");
+        ///deck = new Card("deck");
     }
-    public BettingPanel(AceBet bet) {
-       /// deck = new Card("deck");
+
+    public BettingPanel(AceBet bet)  {
         this.myBet = bet;
         deck = myBet.getDeckCard();
-       
-       
-        initComponents(); 
+        initComponents();
         newRoundGuiReset();
-        //intilizeSomeThings();
-        //this.jLabel7.setIcon(myBet.getDeckCard().imageGetter());
-       //  this.jLabel7.setIcon(deck.imageGetter());
 
-  
+        String s = System.getProperty("user.dir") + File.separator + "src/Images/" + "casino.jpg";
+        casino = new ImageIcon(s);
+
+        jLabel11.setIcon(casino);
+
+        jLabel11.setVisible(true);
+        start = 0; //to indicate the first round. 
     }
-    private void newRoundGuiReset(){
-      
+
+
+    private void newRoundGuiReset() {
+
         jLabel4.setIcon(myBet.getDeckCard().imageGetter());
         jLabel2.setIcon(myBet.getDeckCard().imageGetter());
         jLabel3.setIcon(myBet.getDeckCard().imageGetter());
-        jLabel6.setText(myBet.getCurrTotal()+"");
-        
-        ///if (myBet.checkBettingPower())
-        System.err.println("bet amount ffom Gui"+ myBet.getBetAmount());
-        
-        this.jLabel10.setText(Integer.toString(myBet.getBetAmount()));
-       
-       
-        
-        
-        
-        
-        
-    
-    
-    }
-    private void revealPlay(){
-        ArrayList <Card> list = myBet.listgetter();
-      /// jLabel6.setText(Integer.toString(myBet.getCurrTotal()));
-        jLabel4.setIcon(list.get(0).imageGetter());
-         jLabel2.setIcon(list.get(1).imageGetter());
-          jLabel3.setIcon(list.get(2).imageGetter());
-          jLabel10.setText(myBet.getBetAmount()+"");
-          
-          
-          
-//         jLabel3.setIcon(myBet.listgetter().get(1).imageGetter());
-//          jLabel2.setIcon(myBet.listgetter().get(2).imageGetter());
-        
-    
-   
-    }
-    private void comparePick(String choice){
-      
-//        int m = myBet.roundResults(choice);  
-//        System.out.println("acebet.BettingPanel.comparePick()"+m );
-        this.jLabel6.setText(myBet.roundResults(choice) +"");
-        revealPlay(); 
-        
-    
-    }
-    private void updateBet(int bet){
-     if (!myBet.roundInProgress()){
-         if (myBet.updateBetAmount(bet)){
-            
-            this.jLabel10.setText(Integer.toString(myBet.getBetAmount()));
-            this.jLabel6.setText(myBet.getCurrTotal()+"");
-         }
-         else{
-             if (myBet.getCurrTotal() < 1){
-          JOptionPane.showMessageDialog(null,"No more money");
-             }
-             else {
-             JOptionPane.showMessageDialog(null,"Bet Amount cannot be zero dollars");
+        jLabel6.setText(myBet.getCurrTotal() + "");
 
-             
-             }
-         }
-        
-        }
-        else {
-           JOptionPane.showMessageDialog(null,"You Cannot Update Bet Now| Round in Progress");
-        }
+        System.err.println("bet amount ffom Gui" + myBet.getBetAmount());
+
+        this.jLabel10.setText(Integer.toString(myBet.getBetAmount()));
+
+    }
+
+    private void revealPlay() {
+        System.err.println("here at reveal: ");
+        ArrayList<Card> list = myBet.listgetter();
     
+        if (myBet.getRoundResult()) {
+            jLabel11.setText("You Win");
+
+        } else {
+            jLabel11.setText("You Lose");
+
+        }
+        jLabel4.setIcon(list.get(0).imageGetter());
+        jLabel2.setIcon(list.get(1).imageGetter());
+        jLabel3.setIcon(list.get(2).imageGetter());
+        jLabel10.setText(myBet.getBetAmount() + "");
+        if (myBet.getCurrTotal() == 0) {
+            JOptionPane.showMessageDialog(null, "GAME OVER");
+            System.exit(0);
+          
+        }
+//          
+    }
+
+    private void comparePick(String choice) {
+
+        this.jLabel6.setText(myBet.roundResults(choice) + "");
+        revealPlay();
+
+    }
+
+    private void updateBet(int bet) {
+        if (!myBet.roundInProgress()) {
+            if (myBet.updateBetAmount(bet)) {
+
+                this.jLabel10.setText(Integer.toString(myBet.getBetAmount()));
+                this.jLabel6.setText(myBet.getCurrTotal() + "");
+                jLabel11.setText("Ready?");
+            } else {
+                if (myBet.getCurrTotal() < 1) {
+                    JOptionPane.showMessageDialog(null, "No more money");
+                } else {
+                    JOptionPane.showMessageDialog(null, "OPERATION NOT ALLOWED!");
+
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "You Cannot Update Bet Now| Round in Progress");
+        }
+
     }
 
     /**
@@ -145,14 +143,21 @@ public class BettingPanel extends javax.swing.JPanel {
         jButton7 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(0, 0));
+        setMinimumSize(new java.awt.Dimension(847, 548));
+        setPreferredSize(new java.awt.Dimension(847, 548));
+        setLayout(null);
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 0, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ACE OF SPADES");
+        add(jLabel1);
+        jLabel1.setBounds(184, 15, 507, 46);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/deck.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -161,6 +166,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jLabel2MouseClicked(evt);
             }
         });
+        add(jLabel2);
+        jLabel2.setBounds(340, 310, 160, 190);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/deck.png"))); // NOI18N
         jLabel3.setText("jLabel2");
@@ -169,6 +176,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jLabel3MouseClicked(evt);
             }
         });
+        add(jLabel3);
+        jLabel3.setBounds(570, 310, 160, 190);
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/deck.png"))); // NOI18N
@@ -178,23 +187,33 @@ public class BettingPanel extends javax.swing.JPanel {
                 jLabel4MouseClicked(evt);
             }
         });
+        add(jLabel4);
+        jLabel4.setBounds(90, 310, 160, 190);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 0, 51));
         jLabel5.setText("Score: ");
+        add(jLabel5);
+        jLabel5.setBounds(38, 83, 49, 28);
 
         jLabel6.setText("0");
+        add(jLabel6);
+        jLabel6.setBounds(105, 79, 57, 37);
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(51, 0, 51));
-        jButton1.setText("New Round ?");
+        jButton1.setText("Play ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        add(jButton1);
+        jButton1.setBounds(322, 170, 183, 23);
 
         jLabel7.setText("Increase Betting Amount: ");
+        add(jLabel7);
+        jLabel7.setBounds(52, 126, 137, 16);
 
         jButton2.setText("$1");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -202,6 +221,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
+        add(jButton2);
+        jButton2.setBounds(34, 170, 55, 23);
 
         jButton3.setText("$5");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -209,6 +230,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton3ActionPerformed(evt);
             }
         });
+        add(jButton3);
+        jButton3.setBounds(107, 170, 55, 23);
 
         jButton4.setText("$10");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -216,8 +239,12 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton4ActionPerformed(evt);
             }
         });
+        add(jButton4);
+        jButton4.setBounds(180, 170, 55, 23);
 
-        jLabel8.setText("decrease Betting Amount: ");
+        jLabel8.setText("Decrease Betting Amount: ");
+        add(jLabel8);
+        jLabel8.setBounds(585, 126, 141, 16);
 
         jButton5.setText("$1");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -225,6 +252,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton5ActionPerformed(evt);
             }
         });
+        add(jButton5);
+        jButton5.setBounds(580, 170, 55, 23);
 
         jButton6.setText("$5");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -232,6 +261,8 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton6ActionPerformed(evt);
             }
         });
+        add(jButton6);
+        jButton6.setBounds(652, 170, 55, 23);
 
         jButton7.setText("$10");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -239,178 +270,98 @@ public class BettingPanel extends javax.swing.JPanel {
                 jButton7ActionPerformed(evt);
             }
         });
+        add(jButton7);
+        jButton7.setBounds(719, 170, 55, 23);
 
         jLabel9.setText("Current Bet:");
+        add(jLabel9);
+        jLabel9.setBounds(342, 122, 63, 25);
 
         jLabel10.setText("jLabel10");
+        add(jLabel10);
+        jLabel10.setBounds(436, 122, 61, 25);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(184, 184, 184)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(64, 64, 64))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton2)
-                                .addComponent(jButton3)
-                                .addComponent(jButton4))
-                            .addComponent(jLabel7))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton7)
-                            .addComponent(jButton6)
-                            .addComponent(jButton5)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(82, 82, 82))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
+        jLabel11.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Choose a Card");
+        add(jLabel11);
+        jLabel11.setBounds(180, 220, 468, 76);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
         //intilizeSomeThings();
         if (myBet.roundInProgress())
-        comparePick(myBet.listgetter().get(0).name);
+            comparePick(myBet.listgetter().get(0).name);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
         if (myBet.roundInProgress())
-         comparePick(myBet.listgetter().get(1).name);
+            comparePick(myBet.listgetter().get(1).name);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
         if (myBet.roundInProgress())
-         comparePick(myBet.listgetter().get(2).name);
+            comparePick(myBet.listgetter().get(2).name);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(!myBet.roundInProgress()){
-            
-        if(myBet.getBetAmount() < 1){
-        JOptionPane.showMessageDialog(null,"Bet Amount Cannot be 0");
-        return; 
-        }///System.out.println("acebet.BettingPanel.jButton1ActionPerformed()6666666666666666666666");
-        newRoundGuiReset();
-       /// System.out.println("acebet.BettingPanel.jButton1ActionPerformed()6666666666666666666666");
-        myBet.startRound();
-        System.out.println("acebet.BettingPanel.jButton1ActionPerformed()6666666666666666666666");
-      //  if(myBet.startRound()  == 0 && myBet.getBetAmount() == 0){
-//            JOptionPane.showMessageDialog(null,"Bet Amount Cannot be 0");
-//            
-//        
-//        }
+
+        if (!myBet.roundInProgress()) {
+            if (start == 0) {
+                JOptionPane.showMessageDialog(null, "Increase Bet to Begin");
+                start = 10;
+                return;
+
+            } else if (myBet.getBetAmount() < 1) {
+                JOptionPane.showMessageDialog(null, "Bet Amount Cannot be 0");
+                return;
+            }
+
+            newRoundGuiReset();
+
+            myBet.startRound();
+            jLabel11.setIcon(null);
+            jLabel11.setText("Choose a Card");
+            jLabel11.setVisible(true);
+           
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         updateBet(1);
-//        if (!myBet.roundInProgress()){
-//            myBet.updateBetAmount(1);
-//            this.jLabel10.setText(Integer.toString(myBet.getBetAmount()));
-//        
-//        }
-//        else {
-//           JOptionPane.showMessageDialog(null,"You Cannot Update Bet Now| Round in Progress");
-//        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        updateBet(5); 
+        updateBet(5);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-         updateBet(10); 
+        updateBet(10);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-         updateBet(-1); 
+        updateBet(-1);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-         updateBet(-5); 
+        updateBet(-5);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-         updateBet(-10); 
+        updateBet(-10);
     }//GEN-LAST:event_jButton7ActionPerformed
 
 
@@ -424,6 +375,7 @@ public class BettingPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
